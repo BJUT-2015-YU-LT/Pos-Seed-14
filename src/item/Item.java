@@ -19,16 +19,21 @@ public class Item implements Serializable {
 
     public Item() {
     }
-    public Item(String[] a) {
-        setBarcode(a[0]);
-        setName(a[1]);
-        setUnit(a[2]);
-        setPrice(Double.parseDouble(a[3]));
-        if (a.length == 5) {
-            setDiscount(Double.parseDouble(a[4]));
-        } else {
-            setDiscount(1);
-        }
+    public Item(String barcode,String name,String unit,String price,String discount) {
+        setBarcode(barcode);
+        setName(name);
+        setUnit(unit);
+        setPrice(Double.parseDouble(price));
+        setDiscount(Double.parseDouble(discount));
+        setNum(1);
+    }
+
+    public Item(String barcode,String name,String unit,String price) {
+        setBarcode(barcode);
+        setName(name);
+        setUnit(unit);
+        setPrice(Double.parseDouble(price));
+        setDiscount(1);
         setNum(1);
     }
 
