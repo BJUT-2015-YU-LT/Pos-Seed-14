@@ -1,10 +1,4 @@
-/**
- * Main Tester.
- *
- * @author <Authors name>
- * @version 1.0
- * @since <pre>Dec 31, 2014</pre>
- */
+
 import java.util.ArrayList;
 
 import java.lang.String;
@@ -16,9 +10,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
-/**
- * Created by gjz on 2016/1/5.
- */
 public class MainTest{
 
     @Test
