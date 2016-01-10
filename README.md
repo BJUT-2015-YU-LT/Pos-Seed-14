@@ -6,7 +6,7 @@ Hi! This is team 14!
   
   Or view requirement 3 and 4 in branch [`requirement3and4`](https://github.com/BJUT-2015-YU-LT/Pos-Seed-14/tree/requirement3and4 "Requirement3and4")
   
-  You can also travel to our github
+  You can also travel to our github:
   
 [![DemonCry911]](https://github.com/DemonCry911)
 [DemonCry911]:https://avatars3.githubusercontent.com/u/16530990?v=3&s=80 "DemonCry911"
