@@ -6,8 +6,7 @@ import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import item.*;
-import main.*;
+
 import java.io.*;
 import java.util.*;
 
@@ -92,7 +91,14 @@ public class IndexTest {
     public void testGetDiscount() throws Exception {
 //TODO: Test goes here...
     }
-
+    @Test
+    public void testgetVipDiscount() throws Exception {
+//TODO: Test goes here...
+    }
+    @Test
+    public void testsetVipDiscount() throws Exception {
+//TODO: Test goes here...
+    }
     /**
      * Method: setDiscount(double discount)
      */
