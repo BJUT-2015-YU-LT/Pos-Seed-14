@@ -42,6 +42,34 @@ public class Index implements Serializable {
             setPromotion(false);
         }
     }
+    
+    //添加Index索引文件功能
+    public Index(List<Index> indexList) {
+        System.out.println("输入索引文件:" );
+        Scanner in = new Scanner(System.in);
+        StringBuilder inputStr = new StringBuilder();
+        do {
+            inputStr.append(in.nextLine());
+        } while (!inputStr.toString().replaceAll(" ", "" ).endsWith("}}" ));
+        String a = inputStr.toString();
+        String c[] = a.substring(0, a.length() - 2).split("}," );
+        for (String d : c) {
+            Index index = new Index(d.replaceAll("\\'\\:|\\{|\\'|name|unit|price|discount|promotion| |\\'|\\,|，", "").split(":"));
+            indexList.add(index);
+        }
+        indexList.sort(new SortIndex());
+    }
+    //手动删除功能
+    public void deleteIndex(List<ProductList> productList, String index) {
+        for (int n = 0; n < productList.size(); n++) {
+            if (productList.get(n).getBarcode().equals(index)) {
+                productList.remove(n);
+                System.out.println("索引已删除");
+            } else {
+                System.out.println("该索引不存在");
+            }
+        }
+    }
     public String getName() {
         return name;
     }
@@ -97,6 +125,8 @@ public class Index implements Serializable {
     public void setVipDiscount(double vipDiscount) {
         this.vipDiscount = vipDiscount;
     }
+
+
 
     public void read(List<Index> indexList) {
         try {
