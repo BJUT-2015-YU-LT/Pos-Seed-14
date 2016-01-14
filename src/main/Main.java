@@ -109,5 +109,12 @@ public class Main {
         System.out.println("总计：" + String.format("%.2f",sum)+"(元)");
         System.out.println("节省：" + String.format("%.2f",discount)+"(元)");
     }
+    public static List<Item> getShoppingCart(String inputStr) {
+        List<Item> shoppingCart = new ArrayList<Item>();
+        for (String a : inputStr.replaceAll("\\{|\\[|\\]| |　|\t|\n|'|barcode|name|unit|price|discount|:|：", "").split("]，|},|}")) {
+            shoppingCart.add(new Item(a.split(",|，")));
+        }
+        return shoppingCart;
+    }
 }
 
