@@ -16,6 +16,8 @@ wangyifan231:
 [![wangyifan231]](https://github.com/wangyifan231)
 [wangyifan231]:https://avatars0.githubusercontent.com/u/16530922?v=3&s=50 "wangyifan231"
 
+  *wangyifan231's e-mail cannnot be verified, so wangyifan's code has been updated by DemonCry911*
+
 vanilla17:
 
 [![vanilla17]](https://github.com/vanilla17)
