@@ -1,0 +1,23 @@
+{
+    'ITEM000000': {
+        'name': '¿É¿Ú¿ÉÀÖ',
+        'unit': 'Æ¿',
+        'price': 3.00,
+        'promotion': true,
+		'vipDiscount': 0.90
+    },
+     'ITEM000001': {
+        'name': "Ñ©±Ì",
+        'unit': 'Æ¿',
+        'price': 3.00,
+        'promotion': true,
+		'discount': 0.80,
+        'vipDiscount': 0.95
+    },
+      'ITEM000004': {
+        'name': 'µç³Ø',
+        'unit': 'Æ¿',
+        'price': 5.00,
+        'promotion': false
+    }	
+}
