@@ -1,99 +1,113 @@
 package main;
+
 import item.*;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.String;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        double sum = 0;
-        double discount = 0;
-        JSONArray jsonArray = ReadFile();
-        List<Item> Shoppingcart = new ArrayList<Item>();
-        String name,barcode,unit,price,dis;
-        int i,j,k;
-        for(k=0;k<jsonArray.size();k++)
-        {
-            JSONObject json = jsonArray.getJSONObject(k);
-            barcode = json.getString("barcode");
-            name = json.getString("name");
-            unit = json.getString("unit");
-            price = json.getString("price");
-            dis = json.getString("discount");
-            Item item;
-            if(!dis.equals("1"))
-                 item = new Item(barcode, name, unit,price ,dis);
-            else
-                 item = new Item(barcode, name, unit, price);
-            if (Shoppingcart.size()==0)
-                Shoppingcart.add(item);
-            else{
-                for (j = 0; j < Shoppingcart.size(); j++) {
-                    if (Shoppingcart.get(j).getBarcode().equals(barcode)) {
-                        Shoppingcart.get(j).setNum(Shoppingcart.get(j).getNum() + 1);
-                        break;
-                    }
-                    if (j == Shoppingcart.size() - 1) {
-                        Shoppingcart.add(item);
+
+        List<Index> indexList = new ArrayList<Index>();
+        List<Item> promotion = new ArrayList<Item>();
+        List<Users> user = new ArrayList<Users>();
+
+        ShoppingCart shoppingCart = new ShoppingCart();
+        Index index = new Index();
+        ProductList product = new ProductList();
+        Users users = new Users();
+
+        index.read(indexList);
+        product.read();
+        users.read(user);
+
+        int i = 0;
+        for (Users username : user) {
+            if (username.getName().equals(product.getUserName())) {
+                shoppingCart.vip = username.getVip();
+                shoppingCart.score = username.getScore();
+                break;
+            }
+            i++;
+        }
+        if (i == user.size()) {
+            System.out.println("没有这个用户!");
+        }
+        i = 0;
+        for (String barcode : product.getBarcode()) {
+            if (barcode.equals(indexList.get(i).getBarcode())) {
+                Item item = new Item(indexList.get(i));
+                shoppingCart.add(item);
+            } else {
+                while (++i < indexList.size()) {
+                    if (barcode.equals(indexList.get(i).getBarcode())) {
+                        Item item = new Item(indexList.get(i));
+                        shoppingCart.add(item);
                         break;
                     }
                 }
-           }
+                if (i >= indexList.size()) {
+                    System.out.println("Barcode not found.");
+                }
+            }
         }
-        System.out.println("***商店购物清单***\n");
-        System.out.println("************\n");
-        System.out.println();
-        for (i = 0; i < Shoppingcart.size(); i++) {
-            System.out.println("名称：" + Shoppingcart.get(i).getName() + "," + "数量：" + Shoppingcart.get(i).getNum() + Shoppingcart.get(i).getUnit() + "," + "单价：" +
-                    Shoppingcart.get(i).getPrice() + "," + "(元)" + "," + "小计" + (float)Shoppingcart.get(i).getTotal() + "(元)");
-                sum += Shoppingcart.get(i).getTotal();
-            discount+=Shoppingcart.get(i).getTotalDiscount();
-        }
-        System.out.println("************\n");
-        System.out.println("总计：￥" + sum);
-        System.out.println("折扣总计：￥" + (float)discount);
-    }
-    public static JSONArray ReadFile()
-    {
-        StringBuffer sb = new StringBuffer();
-        String str = "";
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("2.txt"),"GBK"));
-            while((str=br.readLine())!=null)
-                sb.append(str);
-            str = sb.toString();
-            br.close();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        JSONArray jsonArray = JSONArray.fromObject(str);
-        return jsonArray;
-    }
+        double sum = 0;
+        double discount = 0;
 
-    public static List<Item> getShoppingCart(String inputStr) {
-        List<Item> shoppingCart = new ArrayList<Item>();
-        String name,barcode,unit,price;
-        JSONArray jsonArray = JSONArray.fromObject(inputStr);
-        for(int k=0;k<jsonArray.size();k++)
-        {
-            JSONObject json = jsonArray.getJSONObject(k);
-            barcode = json.getString("barcode");
-            name = json.getString("name");
-            unit = json.getString("unit");
-            price = json.getString("price");
-            Item item = new Item(barcode, name, unit, price);
-            shoppingCart.add(item);
+        for (Item a : shoppingCart.shoppingCart) {
+            if (!shoppingCart.vip.equals("true")) {
+                sum += a.getTotal();
+                discount += a.getTotalDiscount();
+            } else {
+                sum += a.getVipTotal();
+                discount += a.getVipTotalDiscount();
+            }
         }
-        return shoppingCart ;
+
+        System.out.println("***商店购物清单***");
+        System.out.println("************");
+        if (shoppingCart.score <= 200) {
+            shoppingCart.score += (int) (sum / 5);
+        } else if (shoppingCart.score > 200 && shoppingCart.score <= 500) {
+            shoppingCart.score += (int) (sum / 5) * 3;
+        } else if (shoppingCart.score > 500) {
+            shoppingCart.score += (int) (sum / 5) * 5;
+        }
+        users.setScore(product.getUserName(), shoppingCart.score);
+        System.out.println("会员编号："+product.getUserName()+"   "+"购物积分:"+shoppingCart.score);
+        System.out.println("--------------------");
+        Date date = new Date();
+        SimpleDateFormat f = new SimpleDateFormat("yyyy年MM月DD日 kk:mm:ss");
+        System.out.println("打印时间:" + f.format(date));
+        System.out.println("--------------------");
+        sum = 0;
+        discount = 0;
+
+        for (Item a : shoppingCart.shoppingCart) {
+            if (a.isPromotion() && a.getNum() >= 2) {
+                promotion.add(a);
+            }
+            if (!shoppingCart.vip.equals("true")) {
+                System.out.println(a.getName() + "，" +"数量：" +a.getNum() + a.getUnit() + "，" +"单价：" + String.format("%.2f",a.getPrice())+"(元)，小计：" + String.format("%.2f",a.getTotal())+"(元)");
+                sum += a.getTotal();
+                discount += a.getTotalDiscount();
+            } else {
+                System.out.println(a.getName() + "，" + "数量："+a.getNum() + a.getUnit() + "，" +"单价：" +String.format("%.2f",a.getPrice())+"(元)，小计：" + String.format("%.2f",a.getVipTotal())+"(元)");
+                sum += a.getVipTotal();
+                discount += a.getVipTotalDiscount();
+            }
+        }
+        if (!promotion.isEmpty()) {
+            System.out.println("--------------------");
+            System.out.println("挥泪赠送");
+            for (Item a : promotion) {
+                System.out.println(a.getName() + "\t1" + a.getUnit());
+            }
+        }
+        System.out.println("************");
+        System.out.println("总计：" + String.format("%.2f",sum)+"(元)");
+        System.out.println("节省：" + String.format("%.2f",discount)+"(元)");
     }
 }
-
-
 

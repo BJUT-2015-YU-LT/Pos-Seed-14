@@ -1,20 +1,18 @@
 package item;
-
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Created by 可 on 2016/1/6.
- */
 public class ShoppingCart {
-    private ArrayList<Item> cart = new ArrayList<Item>();
-
-    public ShoppingCart(){}
-
+    public List<Item>  shoppingCart = new ArrayList<Item>();
+    public String vip;
+    public int score;
     public void add(Item item) {
-        this.cart.add(item);
-    }
-
-    public ArrayList<Item> getCart() {
-        return cart;
+        if (shoppingCart.size() == 0) {
+            shoppingCart.add(item);
+        } else if (shoppingCart.get(shoppingCart.size() - 1).getBarcode().equals(item.getBarcode())) {
+            shoppingCart.get(shoppingCart.size() - 1).setNum(shoppingCart.get(shoppingCart.size() - 1).getNum() + 1);
+        } else {
+            shoppingCart.add(item);
+        }
     }
 }
